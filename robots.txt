@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://tuongotcay.github.io/sitemap.xml
+
+# Disallow common sensitive paths
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.log$
+Disallow: /config/

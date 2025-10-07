@@ -1,175 +1,256 @@
-# 🌶️ Tương Ớt Siêu Cay - Landing Page
+# 🌶️ Tương Ớt Siêu Cay Nguyên Chất - Website Bán Hàng
 
-Landing page quảng cáo và bán tương ớt siêu cay nguyên chất với thiết kế hiện đại và tính năng mua hàng trực tuyến.
+Website giới thiệu và bán tương ớt siêu cay nguyên chất với thiết kế hiện đại, tính năng liên hệ trực tiếp và mạng xã hội tích hợp.
 
 ## 🔥 Tính Năng Chính
 
-- **Thiết kế hiện đại**: Giao diện đẹp mắt với hiệu ứng động và responsive design
-- **Giỏ hàng thông minh**: Thêm/xóa sản phẩm, tính toán tổng tiền tự động
-- **Form liên hệ**: Gửi thông tin khách hàng và lưu trữ localStorage
-- **Tối ưu SEO**: Meta tags và cấu trúc HTML chuẩn
-- **Tương thích đa thiết bị**: Mobile-first responsive design
+### 🎨 **Thiết Kế & Giao Diện**
+- **Responsive Design**: Tối ưu hiển thị trên mọi thiết bị
+- **Animations Mượt Mà**: Hiệu ứng hover và transition đẹp mắt
+- **Typography Chuyên Nghiệp**: Font Roboto kết hợp Dancing Script
+- **Color Scheme Đặc Trưng**: Đỏ đậm (#8b0000) kết hợp cam (#ff6b35)
 
-## 📁 Cấu Trúc File
+### 📞 **Liên Hệ Trực Tiếp**
+- **Nút Gọi Ngay**: Liên kết trực tiếp đến số điện thoại
+- **Tích Hợp Zalo**: Chat nhanh với khách hàng
+- **Form Liên Hệ**: Thu thập thông tin khách hàng
+- **Google Maps**: Hiển thị vị trí cửa hàng
+
+### 🛍️ **Sản Phẩm**
+- **3 Loại Chính**: Siêu cay đặc biệt, truyền thống, bán buôn
+- **Thông Tin Chi Tiết**: Mô tả, giá cả, đặc điểm
+- **Card Design**: Layout đồng nhất, nổi bật tính năng
+- **Mua Bán Buôn**: Chương trình riêng cho doanh nghiệp
+
+### 🌐 **Mạng Xã Hội**
+- **Facebook**: @tuongotcaynguyenchatbongot
+- **Instagram**: @thanh.leviet
+- **TikTok**: @thanh8787
+- **Zalo**: 0982722036
+
+## 📁 Cấu Trúc Dự Án
 
 ```
 tuong-ot-sieu-cay/
-├── index.html          # Trang chủ chính
-├── styles.css          # Styles và responsive design
-├── script.js           # JavaScript functionality
-└── README.md           # Hướng dẫn sử dụng
+├── index.html          # Trang chủ với toàn bộ nội dung
+├── styles.css          # CSS với responsive & animations
+├── script.js           # JavaScript cho tương tác
+├── sitemap.xml         # Sitemap cho công cụ tìm kiếm
+├── robots.txt          # Hướng dẫn cho web crawler
+└── README.md           # Tài liệu hướng dẫn
 ```
 
-## 🚀 Hướng Dẫn Triển Khai Miễn Phí
+## 🚀 Triển Khai Website
 
-### 1. **GitHub Pages** (Khuyến nghị)
+### 🎯 **Lưu Ý Quan Trọng**
+Website này **không sử dụng giỏ hàng** mà tập trung vào **liên hệ trực tiếp** để tư vấn và chốt đơn hàng.
+
+### 📋 **Hướng Dẫn Deploy**
+
+#### **1. GitHub Pages** (Khuyến nghị)
 ```bash
-# Tạo repository mới trên GitHub
-# Upload các file vào repository
+# Upload tất cả file lên GitHub repository
 # Vào Settings > Pages
-# Chọn "main" branch và "/root" folder
-# Website sẽ có URL: https://username.github.io/repository-name
+# Chọn "Deploy from a branch"
+# Website: https://username.github.io/repo-name
 ```
 
-### 2. **Netlify** (Drag & Drop)
+#### **2. Netlify** (Drag & Drop)
 - Truy cập [netlify.com](https://netlify.com)
-- Kéo thả folder chứa các file vào vùng upload
-- Website sẽ được deploy tự động với URL miễn phí
+- Kéo thả folder dự án vào vùng upload
+- Tự động deploy với URL miễn phí
 
-### 3. **Vercel** (Từ GitHub)
-- Kết nối repository GitHub với Vercel
-- Deploy tự động khi push code
-- Hỗ trợ custom domain miễn phí
+#### **3. Vercel**
+- Kết nối với GitHub repository
+- Auto-deploy khi push code mới
+- Hỗ trợ domain tùy chỉnh
 
-### 4. **Firebase Hosting**
+#### **4. Local Testing**
 ```bash
-npm install -g firebase-tools
-firebase login
-firebase init hosting
-firebase deploy
+# Sử dụng Python built-in server
+python -m http.server 8000
+
+# Hoặc Live Server extension trong VS Code
+# Truy cập: http://localhost:8000
 ```
 
-### 5. **Local Development**
-Để chạy local:
-```bash
-# Mở file index.html trực tiếp trong trình duyệt
-# Hoặc sử dụng Live Server extension trong VS Code
-```
-
-## 🎨 Thiết Kế Landing Page
+## 🎨 Chi Tiết Thiết Kế
 
 ### **Hero Section**
-- Tiêu đề hấp dẫn với font chữ đẹp
-- Mô tả sản phẩm ngắn gọn nhưng thu hút
-- Nút CTA (Call-to-Action) nổi bật
-- Hình ảnh sản phẩm với hiệu ứng động
+- Background gradient đỏ-cam nổi bật
+- Animation sản phẩm floating
+- Nút CTA "Gọi Ngay Đặt Hàng"
+- Thống kê xã hội (100+ khách hàng, 10K+ sản phẩm)
 
 ### **Products Section**
-- 3 sản phẩm chính với mức độ cay khác nhau
-- Thiết kế card đẹp mắt với giá cả rõ ràng
-- Badge "Bán chạy nhất" cho sản phẩm nổi bật
+- **Card 1**: Tương Ớt Siêu Cay Đặc Biệt (nổi bật nhất)
+- **Card 2**: Tương Ớt Truyền Thống (bán chạy nhất)
+- **Card 3**: Tương Ớt Bán Buôn (cho doanh nghiệp)
 
 ### **About Section**
-- Thông tin về công ty và sản phẩm
-- Đặc điểm nổi bật của sản phẩm
-- Nguyên liệu và quy trình sản xuất
-
-### **Testimonials**
-- Khách hàng đánh giá tích cực
-- Thiết kế testimonial cards đẹp mắt
+- Quy trình sản xuất tự nhiên
+- Nguyên liệu chất lượng cao
+- Cam kết không chất bảo quản
 
 ### **Contact Section**
 - Thông tin liên hệ đầy đủ
-- Form liên hệ với validation
+- Form tư vấn khách hàng
+- Google Maps vị trí cửa hàng
+- Liên kết mạng xã hội
 
-## 💰 Chiến Lược Bán Hàng
+## 💼 Thông Tin Sản Phẩm
 
-### **Pricing Strategy**
-- Sản phẩm cao cấp: ₫35,000 (giảm từ ₫45,000)
-- Sản phẩm phổ biến: ₫25,000 (giảm từ ₫30,000)
-- Sản phẩm mới: ₫22,000 (giảm từ ₫28,000)
+### **Tương Ớt Siêu Cay Đặc Biệt**
+- **Giá**: ₫30,000 (giảm từ ₫35,000)
+- **Đặc điểm**: Độ cay cực mạnh, đam mê thử thách
+- **Đối tượng**: Người thích cay cực độ
 
-### **Marketing Points**
-- **100% Nguyên Chất**: Không chất bảo quản
-- **Độ Cay Đỉnh Cao**: Ớt tươi tuyển chọn
-- **Sản Xuất Trong Nước**: Hỗ trợ nông dân Việt Nam
+### **Tương Ớt Truyền Thống**
+- **Giá**: ₫45,000 (giảm từ ₫50,000)
+- **Đặc điểm**: Vị cay vừa phải, phù hợp gia đình
+- **Đối tượng**: Sử dụng hàng ngày
 
-## 📱 Responsive Design
+### **Tương Ớt Bán Buôn**
+- **Giá**: Liên hệ báo giá
+- **Đặc điểm**: Dành cho doanh nghiệp, giá ưu đãi
+- **Đối tượng**: Quán ăn, nhà hàng, đại lý
 
-- **Desktop**: Layout 2 cột, hiển thị đầy đủ tính năng
-- **Tablet**: Điều chỉnh layout phù hợp
-- **Mobile**: Single column, tối ưu trải nghiệm touch
+## 📞 Thông Tin Liên Hệ
+
+### **Thông Tin Chính**
+- **Điện thoại**: 0982 722 036
+- **Email**: vietthanh228@gmail.com
+- **Địa chỉ**: Số 8 phố 135 Núi Trúc, Ba Đình, Hà Nội
+- **Giờ làm việc**: 8:00 - 18:00 (Thứ 2 - Chủ nhật)
+
+### **Mạng Xã Hội**
+- **Facebook**: https://fb.com/tuongotcaynguyenchatbongot
+- **Instagram**: https://instagram.com/thanh.leviet
+- **TikTok**: https://tiktok.com/@thanh8787
+- **Zalo**: 0982 722 036
 
 ## 🛠️ Công Nghệ Sử dụng
 
-- **HTML5**: Semantic markup, accessibility
-- **CSS3**: Flexbox, Grid, animations
-- **JavaScript ES6+**: Modern features, localStorage
-- **Font Awesome**: Icons miễn phí
-- **Google Fonts**: Typography đẹp
+### **Frontend**
+- **HTML5**: Semantic, accessibility
+- **CSS3**: Grid, Flexbox, animations
+- **JavaScript**: ES6+, localStorage, form handling
 
-## 🔧 Customization
+### **External Resources**
+- **Font Awesome 6.0**: Icons chuyên nghiệp
+- **Google Fonts**: Roboto + Dancing Script
+- **Google Maps Embed**: Bản đồ cửa hàng
+- **Formspree**: Xử lý form liên hệ
 
-### Thay đổi màu sắc
-Trong `styles.css`, tìm các biến màu:
-```css
-:root {
-  --primary-color: #8b0000;
-  --secondary-color: #ff6b35;
-  --accent-color: #ffe135;
-}
-```
+## 📱 Responsive Design
 
-### Thêm sản phẩm mới
-Trong `index.html`, thêm vào `.products-grid`:
+### **Desktop (>768px)**
+- Layout 2 cột cho contact section
+- Hero section đầy đủ hiệu ứng
+- Social links lớn và rõ ràng
+
+### **Mobile (≤768px)**
+- Single column layout
+- Touch-friendly buttons
+- Ẩn thông tin không cần thiết
+
+## 🎯 Chiến Lược Kinh Doanh
+
+### **Điểm Mạnh Sản Phẩm**
+- ✅ **100% Nguyên Chất**: Không chất bảo quản
+- ✅ **Ớt Tươi Tuyển Chọn**: Độ cay tự nhiên
+- ✅ **Không Trộn Phụ Gia**: Chỉ ớt, muối, lên men tự nhiên
+- ✅ **Sản Xuất Trong Nước**: Hỗ trợ nông dân Việt Nam
+
+### **Đối Tượng Khách Hàng**
+1. **Người Tiêu Dùng Cá Nhân**: Mua lẻ, dùng gia đình
+2. **Doanh Nghiệp**: Quán ăn, nhà hàng, đại lý
+3. **Khách Buôn**: Mua số lượng lớn, chiết khấu cao
+
+## 🔧 Tùy Chỉnh Website
+
+### **Thay Đổi Thông Tin**
 ```html
-<div class="product-card">
-  <!-- Nội dung sản phẩm mới -->
-</div>
+<!-- Trong index.html -->
+<h3 class="product-name">Tên sản phẩm mới</h3>
+<p class="product-description">Mô tả mới</p>
 ```
 
-### Chỉnh sửa nội dung
-- Cập nhật thông tin sản phẩm trong HTML
-- Thay đổi giá cả và mô tả
-- Điều chỉnh thông tin liên hệ
+### **Cập Nhật Liên Hệ**
+```javascript
+// Trong script.js - function callNow()
+const phoneNumber = '0982722036'; // Số mới
+```
 
-## 📊 Tính Năng JavaScript
+### **Thay Đổi Màu Sắc**
+```css
+/* Trong styles.css */
+.social-link { background: #màu_mới; }
+.btn-primary { background: #màu_mới; }
+```
 
-- **Cart Management**: Lưu trữ giỏ hàng localStorage
-- **Form Validation**: Kiểm tra dữ liệu form
-- **Smooth Scrolling**: Điều hướng mượt mà
-- **Animations**: Hiệu ứng khi tải trang
-- **Notifications**: Thông báo tương tác
+## 📈 Tối Ưu Kinh Doanh
 
-## 🌐 SEO Optimization
+### **Tips Tăng Doanh Thu**
+1. **Chăm Sóc Khách Hàng**: Tư vấn nhiệt tình qua Zalo
+2. **Mạng Xã Hội**: Đăng content hấp dẫn trên TikTok
+3. **Khuyến Mãi**: Giảm giá cho đơn hàng lớn
+4. **Feedback**: Lắng nghe đánh giá khách hàng
+5. **Giao Hàng Nhanh**: Đảm bảo sản phẩm tươi ngon
 
-- Meta description hấp dẫn
-- Open Graph tags cho social media
-- Alt text cho hình ảnh
+### **Content Marketing**
+- **Facebook**: Bài viết về quy trình sản xuất
+- **Instagram**: Hình ảnh sản phẩm đẹp
+- **TikTok**: Video thử thách độ cay
+- **Zalo**: Tư vấn 1-1 với khách hàng
+
+## 🌐 SEO & Performance
+
+### **Đã Tối Ưu**
+- Meta tags chuẩn cho Facebook sharing
+- Alt text cho tất cả hình ảnh
 - Semantic HTML structure
-- Fast loading performance
+- Fast loading với external CDN
+- Sitemap.xml cho công cụ tìm kiếm
+- Robots.txt để hướng dẫn crawler
 
-## 📞 Liên Hệ và Hỗ Trợ
+### **Cần Làm Thêm**
+- Thêm Google Analytics
+- Schema markup cho sản phẩm
+- Google Search Console
+- Tối ưu hình ảnh (WebP format)
 
-Để được tư vấn thêm về sản phẩm hoặc kỹ thuật:
-- **Điện thoại**: 0123 456 789
-- **Email**: info@tuongotsieucay.vn
-- **Địa chỉ**: 123 Đường Ớt Cay, Quận 1, TP.HCM
+### **Submit Sitemap**
+Sau khi deploy:
+1. Truy cập [Google Search Console](https://search.google.com/search-console)
+2. Thêm property website
+3. Vào "Sitemaps" > Thêm sitemap URL
+4. Submit: `https://tuongotcay.github.io/sitemap.xml`
 
-## 📈 Mẹo Tối Ưu Doanh Thu
+## 📊 Analytics & Tracking
 
-1. **A/B Testing**: Thử nghiệm các phiên bản khác nhau
-2. **Social Proof**: Thêm nhiều testimonial hơn
-3. **Urgency**: Thêm countdown timer cho khuyến mãi
-4. **Upselling**: Gợi ý sản phẩm liên quan
-5. **Email Marketing**: Thu thập email khách hàng
+Để theo dõi hiệu quả website:
+1. **Google Analytics**: Traffic và hành vi người dùng
+2. **Facebook Pixel**: Theo dõi chuyển đổi từ Facebook
+3. **Zalo Tracking**: Đo lường tương tác Zalo
 
-## 🔒 Bảo Mật và Privacy
+## 🔒 Bảo Mật
 
-- Không lưu thông tin nhạy cảm
-- Sử dụng HTTPS khi triển khai
-- Tuân thủ GDPR cho dữ liệu khách hàng
+- ✅ Không lưu thông tin nhạy cảm
+- ✅ Liên kết mạng xã hội an toàn
+- ✅ Form validation phía client
+- ⚠️ Nên thêm reCAPTCHA cho form
 
 ---
 
-**Chúc bạn kinh doanh thành công với landing page tương ớt siêu cay!** 🌶️🔥
+## 🎯 **Lời Khuyên Cuối Cùng**
+
+**Website này được thiết kế để:**
+- **Thu hút khách hàng** bởi giao diện chuyên nghiệp
+- **Tạo niềm tin** với thông tin minh bạch
+- **Kích thích hành động** với nút liên hệ rõ ràng
+- **Tăng tỷ lệ chuyển đổi** bằng mạng xã hội tích hợp
+
+**Chúc bạn kinh doanh thành công!** 🌶️🚀
+
+**Liên hệ ngay để được tư vấn:** 0982 722 036

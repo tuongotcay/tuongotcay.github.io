@@ -326,6 +326,76 @@ function scrollToAbout() {
     });
 }
 
+// Hàm gọi điện thoại trực tiếp
+function callNow() {
+    const phoneNumber = '0982722036';
+    const message = 'Xin chào! Tôi muốn hỏi về sản phẩm tương ớt từ website của bạn.';
+
+    // Hiển thị thông báo và cho phép gọi
+    showNotification(`📞 Gọi ngay: ${phoneNumber}\n\n${message}`, 'success');
+
+    // Mở dialer với số điện thoại (cho mobile)
+    window.location.href = `tel:${phoneNumber}`;
+
+    // Sau 2 giây cuộn đến phần liên hệ để xem thông tin khác
+    setTimeout(() => {
+        document.querySelector('#contact').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }, 2000);
+}
+
+// Hàm liên hệ Zalo
+function contactZalo() {
+    const phoneNumber = '0982722036';
+    const message = encodeURIComponent('Xin chào! Tôi muốn hỏi về sản phẩm tương ớt từ website.');
+
+    showNotification('🔵 Đang mở Zalo để liên hệ...', 'info');
+
+    // Mở Zalo với số điện thoại
+    window.open(`https://zalo.me/${phoneNumber}`, '_blank');
+
+    // Sau 1 giây hiển thị thông tin liên hệ
+    setTimeout(() => {
+        showNotification(`📱 Zalo: ${phoneNumber}\n\nHoặc gọi trực tiếp: 0982722036`, 'success');
+    }, 1000);
+}
+
+// Hàm liên hệ mua buôn
+function contactWholesale() {
+    const wholesaleInfo = `
+🏪 MUA BÁN BUÔN - ĐẠI LÝ
+
+📦 Dành cho:
+• Quán bún, phở, bánh mỳ
+• Nhà hàng, quán ăn
+• Đại lý, cửa hàng tạp hóa
+• Quán bia, giải khát
+
+💰 Ưu đãi đặc biệt:
+• Giá tốt cho đơn hàng lớn
+• Chiết khấu theo số lượng
+• Hỗ trợ giao hàng nhanh
+• Tư vấn sản phẩm phù hợp
+
+📞 Liên hệ ngay:
+• SĐT: 0982722036
+• Zalo: 0982722036
+• Email: vietthanh228@gmail.com
+
+Hoặc điền form bên cạnh để được tư vấn chi tiết!
+    `;
+
+    showNotification(wholesaleInfo, 'info');
+
+    // Cuộn đến phần liên hệ
+    setTimeout(() => {
+        document.querySelector('#contact').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }, 1000);
+}
+
 // Hàm lưu thông tin liên hệ
 function saveContactInfo(contactInfo) {
     // Lấy danh sách liên hệ đã lưu
