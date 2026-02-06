@@ -39,4 +39,28 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
+  <!-- Bài viết: Cách bảo quản tương ớt -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/cach-bao-quan-tuong-ot.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Bài viết: Món ăn không thể thiếu tương ớt -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/mon-an-khong-the-thieu-tuong-ot.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Bài viết: Phân biệt tương ớt công nghiệp và thủ công -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/phan-biet-tuong-ot-cong-nghiep-va-thu-cong.html</loc>
+    <lastmod>2026-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
