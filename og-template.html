@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background: #0f172a;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 20px solid #dc3545;
+            box-sizing: border-box;
+        }
+
+        .brand {
+            position: absolute;
+            top: 60px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ff6b6b;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .icon-large {
+            font-size: 150px;
+            color: rgba(220, 53, 69, 0.2);
+            position: absolute;
+            z-index: 0;
+        }
+
+        .content {
+            z-index: 1;
+            text-align: center;
+            padding: 0 100px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .title {
+            color: white;
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .url {
+            position: absolute;
+            bottom: 60px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        .pepper {
+            position: absolute;
+            color: #dc3545;
+            opacity: 0.3;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="brand">
+            <i class="fas fa-pepper-hot"></i>
+            Tương Ớt Siêu Cay
+        </div>
+
+        <i class="fas fa-landmark icon-large"></i>
+
+        <div class="content">
+            <span class="category" id="category">VĂN HÓA</span>
+            <h1 class="title" id="title">Lịch Sử Ớt: Hành Trình Từ Mexico Đến Việt Nam</h1>
+        </div>
+
+        <div class="url">tuongotcay.github.io</div>
+    </div>
+
+    <script>
+        // Simple script to update content via URL params if needed
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('title')) document.getElementById('title').innerText = urlParams.get('title');
+        if (urlParams.has('category')) document.getElementById('category').innerText = urlParams.get('category').toUpperCase();
+        if (urlParams.has('icon')) {
+            const iconEl = document.querySelector('.icon-large');
+            iconEl.className = 'fas ' + urlParams.get('icon') + ' icon-large';
+        }
+    </script>
+</body>
+
+</html>
