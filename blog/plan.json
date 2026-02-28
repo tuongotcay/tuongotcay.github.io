@@ -62,5 +62,21 @@
     "priority": "high",
     "done": true,
     "createdAt": "28/2/2026"
+  },
+  {
+    "id": 1772258844733,
+    "title": "Khám phá bản đồ tương ớt Việt Nam: Sự khác biệt giữa vị cay Bắc - Trung - Nam",
+    "note": "Bài viết so sánh văn hóa ẩm thực, phân tích đặc trưng tương ớt Hà Nội (chí chương), tương ớt Hội An/Đà Nẵng và tương ớt Sài Gòn. Tôn vinh giá trị của tương ớt thủ công truyền thống và giới thiệu Tương Ớt Bông Ớt. Keywords: đặc trưng tương ớt các vùng miền, tương ớt hà nội, tương ớt đà nẵng, văn hóa ăn cay.",
+    "priority": "low",
+    "done": true,
+    "createdAt": "28/2/2026"
+  },
+  {
+    "id": 1772258841735,
+    "title": "7 Cách ướp thịt và hải sản nướng đậm vị, lên màu đẹp với tương ớt",
+    "note": "Phân biệt với bài 'nước chấm', bài này tập trung vào công thức 'sốt ướp' (marinade). Hướng dẫn dùng tương ớt nguyên chất trộn cùng mật ong, tỏi, tiêu... để ướp đồ nướng mềm, thấm vị, màu sắc bắt mắt không cần phẩm màu. Keywords: cách ướp thịt nướng ngon, ướp hải sản nướng, sốt ướp thịt bằng tương ớt.",
+    "priority": "high",
+    "done": false,
+    "createdAt": "28/2/2026"
   }
 ]
