@@ -145,6 +145,7 @@ YÊU CẦU NỘI DUNG:
 - Giọng văn thân thiện, chuyên gia
 - PHẢI có ít nhất 1 bảng so sánh
 - Có info-box tips hoặc warning
+- QUAN TRỌNG: Trong nội dung bài viết, hãy chèn 2-3 internal link đến các bài viết liên quan đã có trên website, dùng thẻ <a href="ten-bai.html">tiêu đề bài</a>. Các bài đã có: cach-lam-tuong-ot-tai-nha, tac-dung-tac-hai-cua-ot, cac-loai-ot-cay-nhat-the-gioi, cac-loai-ot-lam-tuong-ot, cach-bao-quan-tuong-ot, mon-an-khong-the-thieu-tuong-ot, phan-biet-tuong-ot-cong-nghiep-va-thu-cong, lich-su-ot-tu-mexico-den-vn, 7-nhom-nguoi-khong-nen-an-ot, an-ot-co-giup-giam-can-khong
 - CHỈ trả về JSON, không có text khác`;
 }
 
@@ -309,6 +310,7 @@ function buildFullHTML(data) {
             <h2 style="color:#fff;font-size:2rem;margin-bottom:15px;"><i class="fas fa-fire"></i> Thử Ngay Tương Ớt Siêu Cay Nguyên Chất!</h2>
             <p style="color:rgba(255,255,255,.7);margin-bottom:25px;">100% ớt tươi, lên men tự nhiên, không chất bảo quản</p>
             <div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;">
+                <a href="../index.html#products" class="btn btn-primary" style="text-decoration:none;"><i class="fas fa-shopping-cart"></i> Xem Sản Phẩm</a>
                 <button class="btn btn-primary" onclick="callNow()"><i class="fas fa-phone"></i> Gọi: ${CONFIG.PHONE}</button>
                 <button class="btn btn-zalo" onclick="contactZalo()"><i class="fas fa-comment-dots"></i> Chat Zalo</button>
             </div>
@@ -404,20 +406,24 @@ async function updateBlogIndex() {
     const data = state.generatedContent;
     const today = new Date().toLocaleDateString('vi-VN');
     const newCard = `
-                <a href="${data.slug}.html" class="blog-card">
+                <article class="blog-card">
                     <div class="blog-card-image" style="background: linear-gradient(135deg, ${data.headerGradient || 'rgba(220,53,69,0.2), rgba(255,107,107,0.1)'});">
-                        <i class="${data.icon}" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                        <i class="${data.icon}"></i>
+                        <i class="fas fa-pepper-hot floating-peppers"></i>
+                        <i class="fas fa-pepper-hot floating-peppers"></i>
+                        <i class="fas fa-pepper-hot floating-peppers"></i>
                     </div>
                     <div class="blog-card-content">
-                        <span class="blog-category"><i class="${data.icon}"></i> Blog</span>
-                        <h3>${data.title}</h3>
-                        <p>${data.metaDescription}</p>
-                        <div class="blog-card-footer">
-                            <span class="blog-read-more">Đọc tiếp <i class="fas fa-arrow-right"></i></span>
-                            <span class="blog-meta"><i class="far fa-clock"></i> ${data.readTime}</span>
+                        <span class="blog-card-category">Blog</span>
+                        <h3 class="blog-card-title">${data.title}</h3>
+                        <p class="blog-card-excerpt">${data.metaDescription}</p>
+                        <a href="${data.slug}.html" class="blog-card-link">Đọc tiếp <i class="fas fa-arrow-right"></i></a>
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${today}</span>
+                            <span><i class="far fa-clock"></i> ${data.readTime}</span>
                         </div>
                     </div>
-                </a>`;
+                </article>`;
 
     // Insert after <div class="blog-grid">
     html = html.replace(/<div class="blog-grid">/, `<div class="blog-grid">${newCard}`);

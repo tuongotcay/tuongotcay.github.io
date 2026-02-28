@@ -63,4 +63,36 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
+  <!-- Bài viết: Cách làm tương ớt tại nhà -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/cach-lam-tuong-ot-tai-nha.html</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Bài viết: Lịch sử ớt từ Mexico đến Việt Nam -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/lich-su-ot-tu-mexico-den-vn.html</loc>
+    <lastmod>2026-02-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Bài viết: 7 nhóm người không nên ăn ớt -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/7-nhom-nguoi-khong-nen-an-ot.html</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Bài viết: Ăn ớt có giúp giảm cân không -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/an-ot-co-giup-giam-can-khong.html</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
