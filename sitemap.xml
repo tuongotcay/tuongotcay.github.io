@@ -103,4 +103,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
+  <url>
+    <loc>https://tuongotcay.github.io/blog/bi-kip-chua-cay-mieng-va-rat-da-day-ngay-lap-tuc.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
