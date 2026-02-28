@@ -476,6 +476,7 @@ function switchTab(tab) {
     if (tab === 'articles') refreshArticleList();
     if (tab === 'planner') renderPlanList();
     if (tab === 'gallery') refreshGalleryList();
+    if (tab === 'products') loadProducts();
 }
 
 // ============ ARTICLE LIST ============
@@ -1126,4 +1127,268 @@ async function deleteGalleryImage(name, sha) {
     } catch (err) {
         showToast(`Lỗi: ${err.message}`, 'error');
     }
+}
+
+// ============ PRODUCT MANAGEMENT ============
+let productList = [];
+let indexHtmlSha = null;
+let indexHtmlContent = '';
+
+const BOTTLE_COLORS = [
+    { value: 'red', label: '🔴 Đỏ (Siêu Cay)' },
+    { value: 'green', label: '🟢 Xanh (Truyền Thống)' },
+    { value: 'orange', label: '🟠 Cam (Bán Buôn)' },
+    { value: 'yellow', label: '🟡 Vàng' },
+    { value: 'purple', label: '🟣 Tím' },
+];
+
+async function loadProducts() {
+    const list = document.getElementById('productEditorList');
+    if (!state.githubToken) { list.innerHTML = '<div class="placeholder"><i class="fas fa-key"></i><p>Cấu hình GitHub Token trước.</p></div>'; return; }
+
+    list.innerHTML = '<div class="placeholder"><i class="fas fa-spinner fa-spin"></i><p>Đang tải...</p></div>';
+
+    try {
+        const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/index.html`;
+        const res = await fetch(url, { headers: { 'Authorization': `token ${state.githubToken}` } });
+        if (!res.ok) throw new Error('Không tải được index.html');
+        const data = await res.json();
+        indexHtmlSha = data.sha;
+        indexHtmlContent = decodeURIComponent(escape(atob(data.content)));
+
+        // Parse products from HTML
+        productList = parseProducts(indexHtmlContent);
+        renderProductEditor();
+        document.getElementById('btnSaveProducts').disabled = false;
+        showToast(`Đã tải ${productList.length} sản phẩm`, 'info');
+    } catch (err) {
+        list.innerHTML = `<div class="placeholder"><i class="fas fa-exclamation-triangle"></i><p>${err.message}</p></div>`;
+    }
+}
+
+function parseProducts(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const cards = doc.querySelectorAll('.products-grid .product-card');
+    const products = [];
+
+    cards.forEach(card => {
+        const name = card.querySelector('.product-name')?.textContent?.trim() || '';
+        const desc = card.querySelector('.product-description')?.textContent?.trim() || '';
+        const priceOrig = card.querySelector('.price-original')?.textContent?.trim() || '';
+        const priceSale = card.querySelector('.price-sale')?.textContent?.trim() || '';
+        const badge = card.querySelector('.product-badge')?.textContent?.trim() || '';
+        const labelHeader = card.querySelector('.label-header')?.textContent?.trim() || '';
+        const labelText = card.querySelector('.label-text')?.textContent?.trim() || '';
+        const isFeatured = card.classList.contains('featured');
+        const isWholesale = card.classList.contains('wholesale');
+
+        // Get bottle color
+        const bottleEl = card.querySelector('[class*="product-bottle-small"]');
+        let color = 'red';
+        if (bottleEl) {
+            const classes = bottleEl.className;
+            BOTTLE_COLORS.forEach(c => { if (classes.includes(c.value)) color = c.value; });
+        }
+
+        // Get spicy level (count pepper icons)
+        const peppers = card.querySelectorAll('.spicy-level .fa-pepper-hot').length;
+
+        products.push({
+            name, desc, priceOrig, priceSale, badge, labelHeader, labelText,
+            color, peppers: peppers || 3, isFeatured, isWholesale
+        });
+    });
+
+    return products;
+}
+
+function renderProductEditor() {
+    const list = document.getElementById('productEditorList');
+    if (!productList.length) {
+        list.innerHTML = '<div class="placeholder"><i class="fas fa-box-open"></i><p>Chưa có sản phẩm. Nhấn "Thêm sản phẩm".</p></div>';
+        return;
+    }
+
+    list.innerHTML = productList.map((p, i) => `
+        <div class="product-editor-item" style="background:var(--admin-input-bg);border:1px solid var(--admin-border);border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <strong style="color:var(--admin-accent);"><i class="fas fa-box"></i> Sản phẩm ${i + 1}</strong>
+                <button class="btn-admin btn-outline btn-sm" onclick="removeProduct(${i})" style="color:var(--admin-danger);border-color:var(--admin-danger);width:auto;">
+                    <i class="fas fa-trash"></i> Xóa
+                </button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Tên sản phẩm *</label>
+                    <input type="text" value="${escHtml(p.name)}" onchange="productList[${i}].name=this.value">
+                </div>
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Mô tả</label>
+                    <textarea rows="2" onchange="productList[${i}].desc=this.value">${escHtml(p.desc)}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Giá gốc (VD: ₫50,000)</label>
+                    <input type="text" value="${escHtml(p.priceOrig)}" onchange="productList[${i}].priceOrig=this.value">
+                </div>
+                <div class="form-group">
+                    <label>Giá bán (VD: ₫45,000)</label>
+                    <input type="text" value="${escHtml(p.priceSale)}" onchange="productList[${i}].priceSale=this.value">
+                </div>
+                <div class="form-group">
+                    <label>Badge (VD: Bán Chạy Nhất)</label>
+                    <input type="text" value="${escHtml(p.badge)}" onchange="productList[${i}].badge=this.value" placeholder="Để trống nếu không cần">
+                </div>
+                <div class="form-group">
+                    <label>Màu chai</label>
+                    <select onchange="productList[${i}].color=this.value">
+                        ${BOTTLE_COLORS.map(c => `<option value="${c.value}" ${p.color === c.value ? 'selected' : ''}>${c.label}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nhãn chai trên (VD: EXTRA HOT)</label>
+                    <input type="text" value="${escHtml(p.labelHeader)}" onchange="productList[${i}].labelHeader=this.value">
+                </div>
+                <div class="form-group">
+                    <label>Nhãn chai dưới (VD: SIÊU CAY)</label>
+                    <input type="text" value="${escHtml(p.labelText)}" onchange="productList[${i}].labelText=this.value">
+                </div>
+                <div class="form-group">
+                    <label>Độ cay (1-5 ớt)</label>
+                    <select onchange="productList[${i}].peppers=+this.value">
+                        ${[1, 2, 3, 4, 5].map(n => `<option value="${n}" ${p.peppers === n ? 'selected' : ''}>🌶️ × ${n}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Kiểu</label>
+                    <select onchange="productList[${i}].isFeatured=this.value==='featured';productList[${i}].isWholesale=this.value==='wholesale';">
+                        <option value="normal" ${!p.isFeatured && !p.isWholesale ? 'selected' : ''}>Thường</option>
+                        <option value="featured" ${p.isFeatured ? 'selected' : ''}>⭐ Nổi bật (viền nổi)</option>
+                        <option value="wholesale" ${p.isWholesale ? 'selected' : ''}>📦 Bán buôn</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function escHtml(str) {
+    return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function addNewProduct() {
+    if (productList.length >= 6) { showToast('Tối đa 6 sản phẩm!', 'error'); return; }
+    productList.push({
+        name: 'Sản Phẩm Mới',
+        desc: 'Mô tả sản phẩm',
+        priceOrig: '₫50,000',
+        priceSale: '₫45,000',
+        badge: '',
+        labelHeader: 'HOT',
+        labelText: 'MỚI',
+        color: 'red',
+        peppers: 3,
+        isFeatured: false,
+        isWholesale: false
+    });
+    renderProductEditor();
+    showToast('Đã thêm sản phẩm mới', 'info');
+}
+
+function removeProduct(index) {
+    if (!confirm(`Xóa sản phẩm "${productList[index].name}"?`)) return;
+    productList.splice(index, 1);
+    renderProductEditor();
+    showToast('Đã xóa sản phẩm', 'info');
+}
+
+function buildProductsHTML(products) {
+    return products.map(p => {
+        const cardClass = p.isFeatured ? 'product-card featured' : p.isWholesale ? 'product-card wholesale' : 'product-card';
+        const badgeHTML = p.badge ? `<div class="product-badge${p.isWholesale ? ' wholesale-badge' : ''}">${p.badge}</div>` : '';
+        const peppersHTML = Array(p.peppers).fill('<i class="fas fa-pepper-hot"></i>').join('\n                            ');
+        let spicyContent = peppersHTML;
+        if (p.isWholesale) {
+            spicyContent = '<i class="fas fa-handshake"></i>\n                            <i class="fas fa-truck"></i>\n                            <i class="fas fa-store"></i>';
+        }
+        const priceHTML = (p.priceOrig || p.priceSale) ? `
+                        <div class="product-price">
+                            ${p.priceOrig ? `<span class="price-original">${p.priceOrig}</span>` : ''}
+                            ${p.priceSale ? `<span class="price-sale">${p.priceSale}</span>` : ''}
+                        </div>` : '';
+
+        return `                <div class="${cardClass}">
+                    ${badgeHTML}
+                    <div class="product-image">
+                        <div class="product-bottle-small ${p.color}">
+                            <div class="bottle-label">
+                                <div class="label-header">${p.labelHeader}</div>
+                                <div class="label-text">${p.labelText}</div>
+                            </div>
+                        </div>
+                        <div class="spicy-level">
+                            ${spicyContent}
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${p.name}</h3>
+                        <p class="product-description">${p.desc}</p>${priceHTML}
+                        <div class="product-buttons">
+                            <button class="btn btn-buy" onclick="callNow()">
+                                <i class="fas fa-phone"></i>
+                                Gọi Ngay
+                            </button>
+                            <button class="btn btn-zalo" onclick="contactZalo()">
+                                <i class="fab fa-zalo"></i>
+                                Zalo
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+    }).join('\n\n');
+}
+
+async function saveProducts() {
+    if (!state.githubToken) { showToast('Chưa cấu hình GitHub Token!', 'error'); return; }
+    if (!productList.length) { showToast('Không có sản phẩm nào!', 'error'); return; }
+
+    const btn = document.getElementById('btnSaveProducts');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+
+    try {
+        // Rebuild products section
+        const newProductsHTML = buildProductsHTML(productList);
+
+        // Replace products-grid content in index.html
+        const gridStart = indexHtmlContent.indexOf('<div class="products-grid">');
+        if (gridStart === -1) throw new Error('Không tìm thấy products-grid trong index.html');
+
+        // Find the matching closing </div> for products-grid
+        let depth = 0;
+        let gridEnd = -1;
+        const searchStart = gridStart + '<div class="products-grid">'.length;
+        for (let i = searchStart; i < indexHtmlContent.length; i++) {
+            if (indexHtmlContent.substring(i, i + 4) === '<div') depth++;
+            if (indexHtmlContent.substring(i, i + 6) === '</div>') {
+                if (depth === 0) { gridEnd = i + 6; break; }
+                depth--;
+            }
+        }
+        if (gridEnd === -1) throw new Error('Không tìm được cấu trúc products-grid');
+
+        const updatedHTML = indexHtmlContent.substring(0, gridStart) +
+            '<div class="products-grid">\n' + newProductsHTML + '\n\n            </div>' +
+            indexHtmlContent.substring(gridEnd);
+
+        await githubCreateFile('index.html', updatedHTML, `🛒 Cập nhật ${productList.length} sản phẩm`);
+        indexHtmlContent = updatedHTML;
+
+        showToast(`✅ Đã cập nhật ${productList.length} sản phẩm lên trang chủ!`, 'success');
+    } catch (err) {
+        showToast(`Lỗi: ${err.message}`, 'error');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Lưu & Push Lên GitHub';
 }

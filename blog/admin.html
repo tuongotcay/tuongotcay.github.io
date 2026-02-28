@@ -41,7 +41,10 @@
             <span class="tab-badge" id="planCount">0</span>
         </button>
         <button class="tab-btn" onclick="switchTab('gallery')" id="tabGallery">
-            <i class="fas fa-images"></i> Quản Lý Gallery
+            <i class="fas fa-images"></i> Gallery
+        </button>
+        <button class="tab-btn" onclick="switchTab('products')" id="tabProducts">
+            <i class="fas fa-box-open"></i> Sản Phẩm
         </button>
     </nav>
 
@@ -295,6 +298,38 @@
                         <p>Chuyển qua tab này để xem ảnh đã có trên gallery.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TAB 5: QUẢN LÝ SẢN PHẨM ========== -->
+    <div class="tab-content" id="contentProducts">
+        <div class="admin-container-full">
+            <div class="admin-card">
+                <div class="card-header-row">
+                    <h3><i class="fas fa-box-open"></i> Quản Lý Sản Phẩm Trang Chủ</h3>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-admin btn-outline btn-sm" onclick="loadProducts()">
+                            <i class="fas fa-sync-alt"></i> Tải lại
+                        </button>
+                        <button class="btn-admin btn-outline btn-sm" onclick="addNewProduct()"
+                            style="border-color:var(--admin-success);color:var(--admin-success);">
+                            <i class="fas fa-plus"></i> Thêm sản phẩm
+                        </button>
+                    </div>
+                </div>
+                <p style="font-size:.8rem;color:var(--admin-muted);margin-bottom:16px;"><i
+                        class="fas fa-info-circle"></i> Chỉnh sửa thông tin sản phẩm rồi nhấn "Lưu & Push" để cập nhật
+                    trực tiếp lên trang chủ. Tối đa 6 sản phẩm.</p>
+                <div id="productEditorList">
+                    <div class="placeholder"><i class="fas fa-box-open"></i>
+                        <p>Nhấn "Tải lại" để xem sản phẩm hiện tại.</p>
+                    </div>
+                </div>
+                <button class="btn-admin btn-generate" id="btnSaveProducts" onclick="saveProducts()"
+                    style="margin-top:16px;" disabled>
+                    <i class="fas fa-cloud-upload-alt"></i> Lưu & Push Lên GitHub
+                </button>
             </div>
         </div>
     </div>
