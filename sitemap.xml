@@ -63,7 +63,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <!-- Bài viết: Cách làm tương ớt tại nhà -->
   <url>
     <loc>https://tuongotcay.github.io/blog/cach-lam-tuong-ot-tai-nha.html</loc>
@@ -94,5 +94,13 @@
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <!-- Bài viết: Ăn cay có nổi mụn không -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/an-cay-co-noi-mun-khong-bi-kip-an-tuong-ot-khong-nong-trong.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
