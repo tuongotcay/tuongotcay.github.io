@@ -118,6 +118,14 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Bài viết: Bản đồ tương ớt Việt Nam -->
+  <url>
+    <loc>https://tuongotcay.github.io/blog/kham-pha-ban-do-tuong-ot-viet-nam-su-khac-biet-vi-cay-bac-trung-nam.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Trang Bộ Sưu Tập -->
   <url>
     <loc>https://tuongotcay.github.io/gallery.html</loc>
