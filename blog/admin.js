@@ -475,6 +475,7 @@ function switchTab(tab) {
 
     if (tab === 'articles') refreshArticleList();
     if (tab === 'planner') renderPlanList();
+    if (tab === 'gallery') refreshGalleryList();
 }
 
 // ============ ARTICLE LIST ============
@@ -869,3 +870,260 @@ savePlan = function (plan) {
     savePlanToCloud(); // async cloud sync
 };
 
+// ============ GALLERY MANAGEMENT ============
+let uploadQueue = [];
+
+// Dropzone events
+document.addEventListener('DOMContentLoaded', () => {
+    const dropzone = document.getElementById('galleryDropzone');
+    const fileInput = document.getElementById('galleryFileInput');
+    if (!dropzone || !fileInput) return;
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', e => { handleFiles(e.target.files); e.target.value = ''; });
+});
+
+function handleFiles(files) {
+    for (const file of files) {
+        if (!file.type.startsWith('image/')) { showToast(`${file.name} không phải ảnh`, 'error'); continue; }
+        if (file.size > 5 * 1024 * 1024) { showToast(`${file.name} quá lớn (max 5MB)`, 'error'); continue; }
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            uploadQueue.push({
+                id: Date.now() + Math.random(),
+                file,
+                name: file.name,
+                size: file.size,
+                preview: e.target.result,
+                base64: e.target.result.split(',')[1], // raw base64 data
+                status: 'pending'
+            });
+            renderUploadQueue();
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function renderUploadQueue() {
+    const container = document.getElementById('uploadQueue');
+    const card = document.getElementById('uploadQueueCard');
+    const count = document.getElementById('uploadQueueCount');
+    if (!container) return;
+
+    card.style.display = uploadQueue.length ? '' : 'none';
+    count.textContent = uploadQueue.length;
+
+    container.innerHTML = uploadQueue.map((item, i) => `
+        <div class="upload-queue-item" id="uqi-${item.id}">
+            <img src="${item.preview}" alt="${item.name}">
+            <div class="info">
+                <div class="name">${item.name}</div>
+                <div class="size">${(item.size / 1024).toFixed(0)} KB</div>
+            </div>
+            <span class="status-icon ${item.status}">
+                ${item.status === 'pending' ? '<i class="fas fa-clock"></i>' :
+            item.status === 'uploading' ? '<i class="fas fa-spinner fa-spin"></i>' :
+                item.status === 'done' ? '<i class="fas fa-check"></i>' :
+                    '<i class="fas fa-times"></i>'}
+            </span>
+            ${item.status === 'pending' ? `<button class="remove-btn" onclick="removeFromQueue(${i})"><i class="fas fa-times"></i></button>` : ''}
+        </div>
+    `).join('');
+}
+
+function removeFromQueue(index) {
+    uploadQueue.splice(index, 1);
+    renderUploadQueue();
+}
+
+function clearUploadQueue() {
+    uploadQueue = uploadQueue.filter(item => item.status !== 'pending');
+    renderUploadQueue();
+}
+
+async function uploadAllImages() {
+    if (!state.githubToken) { showToast('Chưa cấu hình GitHub Token!', 'error'); return; }
+    const pending = uploadQueue.filter(item => item.status === 'pending');
+    if (!pending.length) { showToast('Không có ảnh mới để upload', 'error'); return; }
+
+    const btn = document.getElementById('btnUploadAll');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang upload...';
+    const category = document.getElementById('galleryCategory').value;
+    const categoryLabels = { products: 'Sản phẩm', food: 'Món ăn', process: 'Quy trình' };
+
+    let successCount = 0;
+    const newEntries = [];
+
+    for (const item of pending) {
+        item.status = 'uploading';
+        renderUploadQueue();
+
+        try {
+            const path = `images/gallery/${item.name}`;
+            await githubUploadBinary(path, item.base64, `📸 Upload ảnh gallery: ${item.name}`);
+
+            // Collect info for gallery.html update
+            newEntries.push({
+                filename: item.name,
+                category,
+                categoryLabel: categoryLabels[category],
+                alt: `Tương ớt Bông Ớt - ${item.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')}`
+            });
+
+            item.status = 'done';
+            successCount++;
+        } catch (err) {
+            item.status = 'error';
+            console.error(`Upload failed: ${item.name}`, err);
+        }
+        renderUploadQueue();
+    }
+
+    // Update gallery.html with new entries
+    if (newEntries.length > 0) {
+        try {
+            await updateGalleryHTML(newEntries);
+            showToast(`✅ Upload ${successCount} ảnh + cập nhật gallery.html`, 'success');
+        } catch (err) {
+            showToast(`Upload ${successCount} ảnh OK, nhưng lỗi cập nhật gallery.html: ${err.message}`, 'error');
+        }
+    } else {
+        showToast('Không upload được ảnh nào', 'error');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-rocket"></i> Upload Tất Cả Lên GitHub';
+
+    // Remove done items after 2s
+    setTimeout(() => {
+        uploadQueue = uploadQueue.filter(item => item.status !== 'done');
+        renderUploadQueue();
+        refreshGalleryList();
+    }, 2000);
+}
+
+// Upload binary file to GitHub
+async function githubUploadBinary(path, base64Data, message) {
+    const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/${path}`;
+
+    // Check if exists
+    let sha = null;
+    try {
+        const check = await fetch(url, { headers: { 'Authorization': `token ${state.githubToken}` } });
+        if (check.ok) { sha = (await check.json()).sha; }
+    } catch (e) { }
+
+    const body = { message, content: base64Data, branch: 'main' };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: { 'Authorization': `token ${state.githubToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) { const err = await res.json(); throw new Error(err.message || 'GitHub API error'); }
+    return res.json();
+}
+
+// Update gallery.html with new image entries
+async function updateGalleryHTML(newEntries) {
+    const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/gallery.html`;
+    const res = await fetch(url, { headers: { 'Authorization': `token ${state.githubToken}` } });
+    if (!res.ok) throw new Error('Không tìm thấy gallery.html');
+
+    const data = await res.json();
+    let content = decodeURIComponent(escape(atob(data.content)));
+
+    // Build new HTML entries
+    const newHTML = newEntries.map(entry => `
+            <div class="gallery-item" data-category="${entry.category}">
+                <img src="images/gallery/${entry.filename}" alt="${entry.alt}" loading="lazy">
+                <div class="overlay">
+                    <h4>${entry.filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')}</h4>
+                    <span>${entry.categoryLabel}</span>
+                </div>
+            </div>`).join('\n');
+
+    // Insert before </div> </div> (closing gallery-grid and gallery-container)
+    const insertPoint = content.lastIndexOf('        </div>\n    </div>\n\n    <!-- CTA -->');
+    if (insertPoint === -1) {
+        // Fallback: insert before last </div> of gallery-grid
+        const altPoint = content.indexOf('</div>', content.indexOf('id="galleryGrid"'));
+        if (altPoint === -1) throw new Error('Không tìm được vị trí chèn trong gallery.html');
+        content = content.slice(0, altPoint) + '\n' + newHTML + '\n' + content.slice(altPoint);
+    } else {
+        content = content.slice(0, insertPoint) + '\n' + newHTML + '\n\n' + content.slice(insertPoint);
+    }
+
+    // Push updated file
+    await githubCreateFile('gallery.html', content, `📸 Thêm ${newEntries.length} ảnh vào gallery`);
+}
+
+// Load existing gallery images from GitHub
+async function refreshGalleryList() {
+    const grid = document.getElementById('galleryAdminGrid');
+    const countEl = document.getElementById('galleryImageCount');
+    if (!grid) return;
+
+    if (!state.githubToken) {
+        grid.innerHTML = '<div class="placeholder"><i class="fas fa-key"></i><p>Cấu hình GitHub Token trước.</p></div>';
+        return;
+    }
+
+    grid.innerHTML = '<div class="placeholder"><i class="fas fa-spinner fa-spin"></i><p>Đang tải...</p></div>';
+
+    try {
+        const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/images/gallery`;
+        const res = await fetch(url, { headers: { 'Authorization': `token ${state.githubToken}` } });
+        if (!res.ok) throw new Error('Không tải được danh sách ảnh');
+
+        const files = await res.json();
+        const images = files.filter(f => /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name));
+
+        countEl.textContent = images.length;
+
+        if (!images.length) {
+            grid.innerHTML = '<div class="placeholder"><i class="fas fa-images"></i><p>Chưa có ảnh nào trong gallery.</p></div>';
+            return;
+        }
+
+        grid.innerHTML = images.map(img => `
+            <div class="gallery-admin-item">
+                <img src="https://tuongotcay.github.io/images/gallery/${img.name}" alt="${img.name}" loading="lazy">
+                <div class="item-name">${img.name}</div>
+                <button class="delete-btn" onclick="deleteGalleryImage('${img.name}', '${img.sha}')" title="Xóa ảnh">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    } catch (err) {
+        grid.innerHTML = `<div class="placeholder"><i class="fas fa-exclamation-triangle"></i><p>${err.message}</p></div>`;
+    }
+}
+
+async function deleteGalleryImage(name, sha) {
+    if (!confirm(`Xóa ảnh "${name}" khỏi GitHub?`)) return;
+
+    try {
+        const url = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/contents/images/gallery/${name}`;
+        const res = await fetch(url, {
+            method: 'DELETE',
+            headers: { 'Authorization': `token ${state.githubToken}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: `🗑️ Xóa ảnh gallery: ${name}`, sha, branch: 'main' })
+        });
+        if (!res.ok) throw new Error('Lỗi xóa ảnh');
+        showToast(`Đã xóa ${name}`, 'success');
+        refreshGalleryList();
+    } catch (err) {
+        showToast(`Lỗi: ${err.message}`, 'error');
+    }
+}

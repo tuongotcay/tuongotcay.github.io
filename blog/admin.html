@@ -40,6 +40,9 @@
             <i class="fas fa-lightbulb"></i> Kế Hoạch Chủ Đề
             <span class="tab-badge" id="planCount">0</span>
         </button>
+        <button class="tab-btn" onclick="switchTab('gallery')" id="tabGallery">
+            <i class="fas fa-images"></i> Quản Lý Gallery
+        </button>
     </nav>
 
     <!-- ========== TAB 1: TẠO BÀI VIẾT ========== -->
@@ -232,6 +235,64 @@
                 <div class="plan-list" id="planList">
                     <div class="placeholder"><i class="fas fa-clipboard-list"></i>
                         <p>Chưa có chủ đề nào.<br>Dùng AI gợi ý hoặc thêm thủ công.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== TAB 4: QUẢN LÝ GALLERY ========== -->
+    <div class="tab-content" id="contentGallery">
+        <div class="admin-container">
+            <!-- Left: Upload -->
+            <div style="display:flex;flex-direction:column;gap:16px;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-cloud-upload-alt"></i> Upload Ảnh</h3>
+                    <p style="font-size:.85rem;color:var(--admin-muted);margin-bottom:12px;">Kéo thả ảnh hoặc click để
+                        chọn. Ảnh sẽ được push lên GitHub và tự động thêm vào trang Gallery.</p>
+                    <div class="gallery-dropzone" id="galleryDropzone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Kéo thả ảnh vào đây<br><small>hoặc click để chọn file</small></p>
+                        <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none;">
+                    </div>
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Danh mục ảnh</label>
+                        <select id="galleryCategory">
+                            <option value="products">📦 Sản Phẩm</option>
+                            <option value="food">🍜 Món Ăn</option>
+                            <option value="process">🔬 Quy Trình</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Upload Queue -->
+                <div class="admin-card" id="uploadQueueCard" style="display:none;">
+                    <div class="card-header-row">
+                        <h3><i class="fas fa-list"></i> Hàng Đợi Upload (<span id="uploadQueueCount">0</span>)</h3>
+                        <button class="btn-admin btn-outline btn-sm" onclick="clearUploadQueue()"
+                            style="color:var(--admin-danger);border-color:var(--admin-danger);">
+                            <i class="fas fa-trash"></i> Xóa hết
+                        </button>
+                    </div>
+                    <div class="upload-queue" id="uploadQueue"></div>
+                    <button class="btn-admin btn-generate" id="btnUploadAll" onclick="uploadAllImages()"
+                        style="margin-top:12px;width:100%;">
+                        <i class="fas fa-rocket"></i> Upload Tất Cả Lên GitHub
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Gallery hiện tại -->
+            <div class="admin-card">
+                <div class="card-header-row">
+                    <h3><i class="fas fa-th"></i> Ảnh Trên Gallery (<span id="galleryImageCount">0</span>)</h3>
+                    <button class="btn-admin btn-outline btn-sm" onclick="refreshGalleryList()">
+                        <i class="fas fa-sync-alt"></i> Làm mới
+                    </button>
+                </div>
+                <div class="gallery-admin-grid" id="galleryAdminGrid">
+                    <div class="placeholder"><i class="fas fa-images"></i>
+                        <p>Chuyển qua tab này để xem ảnh đã có trên gallery.</p>
                     </div>
                 </div>
             </div>

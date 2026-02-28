@@ -964,3 +964,157 @@ body.admin-page {
     background: rgba(245, 158, 11, .15);
     color: var(--admin-warning);
 }
+
+/* ============ GALLERY ADMIN ============ */
+.gallery-dropzone {
+    border: 2px dashed var(--admin-border);
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .3s;
+    background: var(--admin-input-bg);
+}
+.gallery-dropzone:hover, .gallery-dropzone.dragover {
+    border-color: var(--admin-accent);
+    background: rgba(99,102,241,.08);
+}
+.gallery-dropzone i {
+    font-size: 2.5rem;
+    color: var(--admin-accent);
+    opacity: .5;
+    margin-bottom: 10px;
+    display: block;
+}
+.gallery-dropzone p {
+    color: var(--admin-muted);
+    font-size: .9rem;
+}
+.gallery-dropzone small { font-size: .75rem; }
+
+/* Upload Queue */
+.upload-queue {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.upload-queue-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--admin-input-bg);
+    border-radius: 10px;
+    border: 1px solid var(--admin-border);
+}
+.upload-queue-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.upload-queue-item .info {
+    flex: 1;
+    min-width: 0;
+}
+.upload-queue-item .info .name {
+    font-size: .8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.upload-queue-item .info .size {
+    font-size: .7rem;
+    color: var(--admin-muted);
+}
+.upload-queue-item .status-icon {
+    font-size: 1rem;
+    width: 24px;
+    text-align: center;
+}
+.upload-queue-item .status-icon.pending { color: var(--admin-muted); }
+.upload-queue-item .status-icon.uploading { color: var(--admin-accent); }
+.upload-queue-item .status-icon.done { color: var(--admin-success); }
+.upload-queue-item .status-icon.error { color: var(--admin-danger); }
+.upload-queue-item .remove-btn {
+    background: none;
+    border: none;
+    color: var(--admin-muted);
+    cursor: pointer;
+    font-size: .8rem;
+    padding: 4px;
+}
+.upload-queue-item .remove-btn:hover { color: var(--admin-danger); }
+
+/* Gallery Admin Grid */
+.gallery-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+.gallery-admin-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 1px solid var(--admin-border);
+    cursor: pointer;
+    transition: all .2s;
+}
+.gallery-admin-item:hover {
+    border-color: var(--admin-accent);
+    transform: scale(1.03);
+}
+.gallery-admin-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.gallery-admin-item .item-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,.75);
+    padding: 4px 8px;
+    font-size: .65rem;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.gallery-admin-item .delete-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(239,68,68,.9);
+    border: none;
+    color: #fff;
+    font-size: .7rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.gallery-admin-item:hover .delete-btn { display: flex; }
+
+.gallery-admin-grid .placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: var(--admin-muted);
+}
+.gallery-admin-grid .placeholder i {
+    font-size: 2rem;
+    opacity: .3;
+    margin-bottom: 10px;
+    display: block;
+}
