@@ -3,7 +3,7 @@ let cart = [];
 let cartTotal = 0;
 
 // Hàm khởi tạo khi trang web tải xong
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Khởi tạo các tính năng
     initScrollEffects();
     initCart();
@@ -19,7 +19,7 @@ function initScrollEffects() {
     const header = document.querySelector('.header');
     const scrollIndicator = document.querySelector('.scroll-indicator');
 
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
         // Hiệu ứng header khi cuộn
@@ -41,7 +41,7 @@ function initScrollEffects() {
 
     // Click scroll indicator để cuộn xuống
     if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', function() {
+        scrollIndicator.addEventListener('click', function () {
             document.querySelector('#products').scrollIntoView({
                 behavior: 'smooth'
             });
@@ -64,7 +64,7 @@ function initContactForm() {
     const contactForm = document.getElementById('contactForm');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             // Lấy dữ liệu từ form
@@ -91,7 +91,7 @@ function initSmoothScroll() {
     const navLinks = document.querySelectorAll('.nav-link');
 
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
 
             if (href.startsWith('#')) {
@@ -331,6 +331,15 @@ function callNow() {
     const phoneNumber = '0982722036';
     const message = 'Xin chào! Tôi muốn hỏi về sản phẩm tương ớt từ website của bạn.';
 
+    // GA4 Event Tracking - Theo dõi chuyển đổi
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'goi_dien_dat_hang', {
+            event_category: 'lien_he',
+            event_label: 'nut_goi_ngay',
+            value: 1
+        });
+    }
+
     // Hiển thị thông báo và cho phép gọi
     showNotification(`📞 Gọi ngay: ${phoneNumber}\n\n${message}`, 'success');
 
@@ -349,6 +358,15 @@ function callNow() {
 function contactZalo() {
     const phoneNumber = '0982722036';
     const message = encodeURIComponent('Xin chào! Tôi muốn hỏi về sản phẩm tương ớt từ website.');
+
+    // GA4 Event Tracking - Theo dõi chuyển đổi
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'lien_he_zalo', {
+            event_category: 'lien_he',
+            event_label: 'nut_zalo',
+            value: 1
+        });
+    }
 
     showNotification('🔵 Đang mở Zalo để liên hệ...', 'info');
 
@@ -421,7 +439,7 @@ function updateCartCount() {
     if (cartCount > 0) {
         document.title = `Tương Ớt Siêu Cay (${cartCount})`;
     } else {
-        document.title = 'Tương Ớt Siêu Cay Nguyên Chất - Đốt Cháy Vị Giác!';
+        document.title = 'Tương Ớt Phở Siêu Cay Nguyên Chất | Bông Ớt - Gia Truyền Hà Nội';
     }
 }
 
